@@ -2,7 +2,9 @@ package com.revengemission.commons.fileservice.service.impl;
 
 import com.revengemission.commons.fileservice.common.StorageFileNotFoundException;
 import com.revengemission.commons.fileservice.common.StorageException;
+import com.revengemission.commons.fileservice.persistence.mapper.FileRecordEntityMapper;
 import com.revengemission.commons.fileservice.service.StorageService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,10 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
 @Service
-public class FileSystemStorageService implements StorageService {
+public class FileStorageService implements StorageService {
+
+    @Autowired
+    FileRecordEntityMapper fileRecordEntityMapper;
 
     @Override
     public void store(Path directoryPath, MultipartFile file) {

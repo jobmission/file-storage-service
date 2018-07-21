@@ -87,15 +87,15 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER)
                 .and()
-                .requestMatchers().antMatchers("/upload/**", "/files/*", "/public/**")
+                .requestMatchers().antMatchers("/upload/**", "/protected/*", "/public/**")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/public/**")
                 .access("permitAll()")
                 .antMatchers("/upload/**")
-                .access("hasAuthority('ROLE_EXTERNAL_USER')")
-                .antMatchers("/files/**")
-                .access("hasAuthority('ROLE_EXTERNAL_USER')");
+                .access("hasAuthority('ROLE_USER','ROLE_ADMIN')")
+                .antMatchers("/protected/**")
+                .access("hasAuthority('ROLE_USER','ROLE_ADMIN')");
     }
 
 }

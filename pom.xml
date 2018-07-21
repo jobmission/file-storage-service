@@ -12,8 +12,8 @@
     <groupId>com.revengemission.commons</groupId>
     <artifactId>file-storage-service</artifactId>
     <packaging>jar</packaging>
-    <name>oauth2 filesystem storage service</name>
-    <description>oauth2 filesystem storage service</description>
+    <name>oauth2 file storage service</name>
+    <description>oauth2 file storage service</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -21,17 +21,9 @@
         <java.version>1.8</java.version>
         <security.oauth2.version>2.3.3.RELEASE</security.oauth2.version>
         <spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
+        <mybatis.starter.version>1.3.2</mybatis.starter.version>
+        <pagehelper.starter.version>1.2.5</pagehelper.starter.version>
     </properties>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-
 
     <dependencies>
 
@@ -69,7 +61,24 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
+            <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>${mybatis.starter.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>${pagehelper.starter.version}</version>
         </dependency>
 
         <dependency>
@@ -83,6 +92,54 @@
             <version>2.6</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <plugin>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-maven-plugin</artifactId>
+                <version>1.3.7</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>${mysql.version}</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>com.revengemission.plugins</groupId>
+                        <artifactId>mybatis-plugins</artifactId>
+                        <version>0.2.1</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <overwrite>true</overwrite>
+                    <verbose>true</verbose>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
