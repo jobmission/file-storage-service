@@ -92,9 +92,9 @@ public class FileServiceController {
     }
 
     @CrossOrigin
-    @PostMapping("/upload/private")
+    @PostMapping("/upload/protected")
     @ResponseBody
-    public Map<String, Object> handleFileUploadPrivate(@RequestPart(value = "files", required = false) List<MultipartFile> files,
+    public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                                        Principal principal) {
         Map<String, Object> result = new HashMap<>();
         Set<String> fileNames = new LinkedHashSet<>();
