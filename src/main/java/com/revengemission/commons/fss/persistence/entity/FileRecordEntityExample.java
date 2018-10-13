@@ -1,4 +1,4 @@
-package com.revengemission.commons.fileservice.persistence.entity;
+package com.revengemission.commons.fss.persistence.entity;
 
 import java.util.ArrayList;
 import java.util.Date;

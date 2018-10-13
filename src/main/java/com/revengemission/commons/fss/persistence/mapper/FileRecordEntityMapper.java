@@ -1,7 +1,7 @@
-package com.revengemission.commons.fileservice.persistence.mapper;
+package com.revengemission.commons.fss.persistence.mapper;
 
-import com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity;
-import com.revengemission.commons.fileservice.persistence.entity.FileRecordEntityExample;
+import com.revengemission.commons.fss.persistence.entity.FileRecordEntity;
+import com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 

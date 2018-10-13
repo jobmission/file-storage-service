@@ -1,4 +1,4 @@
-package com.revengemission.commons.fileservice;
+package com.revengemission.commons.fss;
 
 import org.junit.Ignore;
 import org.junit.Test;

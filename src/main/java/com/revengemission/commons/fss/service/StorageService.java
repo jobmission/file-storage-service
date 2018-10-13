@@ -1,12 +1,13 @@
-package com.revengemission.commons.fileservice.service;
+package com.revengemission.commons.fss.service;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Path;
 
 public interface StorageService {
-    void store(Path directoryPath, MultipartFile file);
+    String store(Path directoryPath, MultipartFile file) throws IOException;
 
     Resource loadAsResource(Path fullPath);
 }

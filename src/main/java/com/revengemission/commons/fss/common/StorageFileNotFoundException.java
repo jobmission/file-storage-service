@@ -1,4 +1,4 @@
-package com.revengemission.commons.fileservice.common;
+package com.revengemission.commons.fss.common;
 
 public class StorageFileNotFoundException extends StorageException {
 

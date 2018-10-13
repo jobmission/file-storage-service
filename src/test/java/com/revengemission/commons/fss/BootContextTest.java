@@ -1,7 +1,7 @@
-package com.revengemission.commons.fileservice;
+package com.revengemission.commons.fss;
 
-import com.revengemission.commons.fileservice.persistence.entity.FileRecordEntityExample;
-import com.revengemission.commons.fileservice.persistence.mapper.FileRecordEntityMapper;
+import com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample;
+import com.revengemission.commons.fss.persistence.mapper.FileRecordEntityMapper;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;

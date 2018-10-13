@@ -40,7 +40,7 @@
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="com.revengemission.commons.fileservice.persistence.entity"
+        <javaModelGenerator targetPackage="com.revengemission.commons.fss.persistence.entity"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -50,7 +50,7 @@
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="com.revengemission.commons.fileservice.persistence.mapper"
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.revengemission.commons.fss.persistence.mapper"
                              targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>

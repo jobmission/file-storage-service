@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.revengemission.commons.fileservice.persistence.mapper.FileRecordEntityMapper">
-  <resultMap id="BaseResultMap" type="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity">
+<mapper namespace="com.revengemission.commons.fss.persistence.mapper.FileRecordEntityMapper">
+  <resultMap id="BaseResultMap" type="com.revengemission.commons.fss.persistence.entity.FileRecordEntity">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="shared" jdbcType="BIT" property="shared" />
@@ -73,7 +73,7 @@
   <sql id="Base_Column_List">
     id, user_id, shared, file_name, record_status, remarks, version, date_created, last_modified
   </sql>
-  <select id="selectByExample" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntityExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
@@ -97,13 +97,13 @@
     delete from file_record_entity
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntityExample">
+  <delete id="deleteByExample" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample">
     delete from file_record_entity
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity">
+  <insert id="insert" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntity">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -114,7 +114,7 @@
       #{recordStatus,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
       #{dateCreated,jdbcType=TIMESTAMP}, #{lastModified,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity">
+  <insert id="insertSelective" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntity">
     <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
       SELECT LAST_INSERT_ID()
     </selectKey>
@@ -160,7 +160,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntityExample" resultType="java.lang.Long">
+  <select id="countByExample" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample" resultType="java.lang.Long">
     select count(*) from file_record_entity
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
@@ -216,7 +216,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity">
+  <update id="updateByPrimaryKeySelective" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntity">
     update file_record_entity
     <set>
       <if test="userId != null">
@@ -246,7 +246,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.revengemission.commons.fileservice.persistence.entity.FileRecordEntity">
+  <update id="updateByPrimaryKey" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntity">
     update file_record_entity
     set user_id = #{userId,jdbcType=BIGINT},
       shared = #{shared,jdbcType=BIT},

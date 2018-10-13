@@ -1,4 +1,4 @@
-package com.revengemission.commons.fileservice.config;
+package com.revengemission.commons.fss.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,9 +93,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .antMatchers("/public/**")
                 .access("permitAll()")
                 .antMatchers("/upload/**")
-                .access("hasAuthority('ROLE_USER','ROLE_ADMIN')")
+                .access("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')")
                 .antMatchers("/protected/**")
-                .access("hasAuthority('ROLE_USER','ROLE_ADMIN')");
+                .access("hasAnyAuthority('ROLE_USER','ROLE_ADMIN')");
     }
 
 }

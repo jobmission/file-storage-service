@@ -1,12 +1,13 @@
-package com.revengemission.commons.fileservice.controller;
+package com.revengemission.commons.fss.controller;
 
-import com.revengemission.commons.fileservice.common.StorageFileNotFoundException;
-import com.revengemission.commons.fileservice.service.StorageService;
+import com.revengemission.commons.fss.common.StorageFileNotFoundException;
+import com.revengemission.commons.fss.service.StorageService;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,13 +21,16 @@ import java.util.*;
 
 
 @Controller
-public class FileServiceController {
+public class FileStorageController {
 
     @Value("${storage.location.public}")
     private String publicStorageLocation;
 
     @Value("${storage.location.private}")
     private String privateStorageLocation;
+
+    @Value("#{'${fss.type.whitelist}'.split(',')}")
+    private Set<String> whitelist;
 
     @Autowired
     StorageService storageService;
@@ -79,14 +83,25 @@ public class FileServiceController {
     public Map<String, Object> handleFileUpload(@RequestPart(value = "files", required = false) List<MultipartFile> files,
                                                 Principal principal) {
         Map<String, Object> result = new HashMap<>();
-        Set<String> fileNames = new LinkedHashSet<>();
+        List<String> fileNames = new LinkedList<>();
         if (files != null && files.size() > 0) {
             files.forEach(multipartFile -> {
-                storageService.store(Paths.get(publicStorageLocation), multipartFile);
-                fileNames.add(multipartFile.getOriginalFilename());
+                String fileType = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+                if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
+                    try {
+                        String newFileName = storageService.store(Paths.get(publicStorageLocation), multipartFile);
+                        fileNames.add(newFileName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             });
         }
-        result.put("status", "1");
+        if (fileNames.size() > 0) {
+            result.put("status", 1);
+        } else {
+            result.put("status", 0);
+        }
         result.put("files", fileNames);
         return result;
     }
@@ -95,16 +110,27 @@ public class FileServiceController {
     @PostMapping("/upload/protected")
     @ResponseBody
     public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "files", required = false) List<MultipartFile> files,
-                                                       Principal principal) {
+                                                         Principal principal) {
         Map<String, Object> result = new HashMap<>();
-        Set<String> fileNames = new LinkedHashSet<>();
+        List<String> fileNames = new LinkedList<>();
         if (files != null && files.size() > 0) {
             files.forEach(multipartFile -> {
-                storageService.store(Paths.get(privateStorageLocation), multipartFile);
-                fileNames.add(multipartFile.getOriginalFilename());
+                String fileType = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+                if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
+                    try {
+                        String newFileName = storageService.store(Paths.get(privateStorageLocation), multipartFile);
+                        fileNames.add(newFileName);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             });
         }
-        result.put("status", "1");
+        if (fileNames.size() > 0) {
+            result.put("status", 1);
+        } else {
+            result.put("status", 0);
+        }
         result.put("files", fileNames);
         return result;
     }

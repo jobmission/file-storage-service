@@ -1,4 +1,4 @@
-package com.revengemission.commons.fileservice.config;
+package com.revengemission.commons.fss.config;
 
 
 import org.mybatis.spring.annotation.MapperScan;
@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.revengemission.commons.fileservice.persistence.mapper")
+@MapperScan("com.revengemission.commons.fss.persistence.mapper")
 public class MapperScannerConfig {
 
 }
