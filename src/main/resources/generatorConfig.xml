@@ -34,6 +34,10 @@
                         connectionURL="jdbc:mysql://localhost:3306/file_storage_service?useSSL=false"
                         userId="file_storage_service"
                         password="file_storage_service">
+            <property name="useSSL" value="false"/>
+            <property name="characterEncoding" value="utf8"/>
+            <property name="serverTimezone" value="GMT+8"/>
+            <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
