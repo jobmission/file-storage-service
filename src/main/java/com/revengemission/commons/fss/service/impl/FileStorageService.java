@@ -28,7 +28,7 @@ public class FileStorageService implements StorageService {
     NewIdWorker idWorker = NewIdWorker.getInstance(1, 1);
 
     @Override
-    public String store(Path directoryPath, MultipartFile file) throws IOException {
+    public String save(Path directoryPath, MultipartFile file) throws IOException {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         if (!Files.exists(directoryPath)) {
             Files.createDirectories(directoryPath);

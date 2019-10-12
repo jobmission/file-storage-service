@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface StorageService {
-    String store(Path directoryPath, MultipartFile file) throws IOException;
+    String save(Path directoryPath, MultipartFile file) throws IOException;
 
     Resource loadAsResource(Path fullPath);
 }
