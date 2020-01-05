@@ -1,8 +1,8 @@
 package com.revengemission.commons.fss.service.impl;
 
 import com.revengemission.commons.fss.common.NewIdWorker;
-import com.revengemission.commons.fss.common.StorageFileNotFoundException;
 import com.revengemission.commons.fss.common.StorageException;
+import com.revengemission.commons.fss.common.StorageFileNotFoundException;
 import com.revengemission.commons.fss.persistence.mapper.FileRecordEntityMapper;
 import com.revengemission.commons.fss.service.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class FileStorageService implements StorageService {
     NewIdWorker idWorker = NewIdWorker.getInstance(1, 1);
 
     @Override
-    public String save(Path directoryPath, MultipartFile file) throws IOException {
+    public String save(Path directoryPath, MultipartFile file, String fileExtension) throws IOException {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         if (!Files.exists(directoryPath)) {
             Files.createDirectories(directoryPath);
@@ -36,18 +36,10 @@ public class FileStorageService implements StorageService {
         if (file == null || file.isEmpty()) {
             throw new StorageException("Failed to store empty file " + filename);
         }
-        /*if (filename.contains("..")) {
-            // This is a security check
-            throw new StorageException(
-                    "Cannot store file with relative path outside current directory "
-                            + filename);
-        }*/
-
-        String fileType = StringUtils.getFilenameExtension(filename);
-        String newFileName = idWorker.nextId() + "." + fileType;
+        String newFileName = idWorker.nextId() + "." + fileExtension;
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, directoryPath.resolve(newFileName),
-                    StandardCopyOption.REPLACE_EXISTING);
+                StandardCopyOption.REPLACE_EXISTING);
         }
         return newFileName;
     }
@@ -60,7 +52,7 @@ public class FileStorageService implements StorageService {
                 return resource;
             } else {
                 throw new StorageFileNotFoundException(
-                        "Could not read file: " + fullPath);
+                    "Could not read file: " + fullPath);
 
             }
         } catch (MalformedURLException e) {

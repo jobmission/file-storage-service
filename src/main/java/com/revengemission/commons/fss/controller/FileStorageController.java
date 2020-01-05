@@ -106,14 +106,14 @@ public class FileStorageController {
 
     @PostMapping("/upload/protected")
     @ResponseBody
-    public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub) {
-        return saveToDisk(file, protectedStorageLocation, sub);
+    public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub, @RequestParam(value = "originalName", required = false) String originalName) {
+        return saveToDisk(file, protectedStorageLocation, sub, originalName);
     }
 
     @PostMapping(value = "/upload/public")
     @ResponseBody
-    public Map<String, Object> handleFileUpload(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub) {
-        return saveToDisk(file, publicStorageLocation, sub);
+    public Map<String, Object> handleFileUpload(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub, @RequestParam(value = "originalName", required = false) String originalName) {
+        return saveToDisk(file, publicStorageLocation, sub, originalName);
     }
 
     private Map<String, Object> saveToDisk(List<MultipartFile> files, String storageLocation) {
@@ -121,20 +121,20 @@ public class FileStorageController {
         List<String> fileNames = new LinkedList<>();
         if (files != null && files.size() > 0) {
             files.forEach(multipartFile -> {
-                String fileType = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
-                if (fileType == null) {
+                String fileExtension = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+                if (fileExtension == null) {
                     String multipartFileContentType = multipartFile.getContentType();
                     if (StringUtils.endsWithIgnoreCase("image/png", multipartFileContentType)) {
-                        fileType = "png";
+                        fileExtension = "png";
                     } else if (StringUtils.endsWithIgnoreCase("image/jpg", multipartFileContentType)) {
-                        fileType = "jpg";
+                        fileExtension = "jpg";
                     } else if (StringUtils.endsWithIgnoreCase("image/jpeg", multipartFileContentType)) {
-                        fileType = "jpg";
+                        fileExtension = "jpg";
                     }
                 }
-                if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
+                if (whitelist.contains(StringUtils.trimAllWhitespace(fileExtension).toLowerCase())) {
                     try {
-                        String newFileName = storageService.save(Paths.get(storageLocation), multipartFile);
+                        String newFileName = storageService.save(Paths.get(storageLocation), multipartFile, fileExtension);
                         fileNames.add(newFileName);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -151,26 +151,26 @@ public class FileStorageController {
         return result;
     }
 
-    private Map<String, Object> saveToDisk(MultipartFile multipartFile, String storageLocation, String sub) {
+    private Map<String, Object> saveToDisk(MultipartFile multipartFile, String storageLocation, String sub, String originalName) {
         if (!StringUtils.isEmpty(sub)) {
             sub = sub.replaceAll("[^a-zA-Z]", "");
         }
         Map<String, Object> result = new HashMap<>(16);
         String newFileName = "";
-        String fileType = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
-        if (fileType == null || "".equals(fileType)) {
+        String fileExtension = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
+        if (fileExtension == null || "".equals(fileExtension)) {
             String multipartFileContentType = multipartFile.getContentType();
             if (StringUtils.endsWithIgnoreCase("image/png", multipartFileContentType)) {
-                fileType = "png";
+                fileExtension = "png";
             } else if (StringUtils.endsWithIgnoreCase("image/jpg", multipartFileContentType)) {
-                fileType = "jpg";
+                fileExtension = "jpg";
             } else if (StringUtils.endsWithIgnoreCase("image/jpeg", multipartFileContentType)) {
-                fileType = "jpg";
+                fileExtension = "jpg";
             }
         }
-        if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
+        if (whitelist.contains(StringUtils.trimAllWhitespace(fileExtension).toLowerCase())) {
             try {
-                newFileName = storageService.save(Paths.get(storageLocation, sub), multipartFile);
+                newFileName = storageService.save(Paths.get(storageLocation, sub), multipartFile, fileExtension);
             } catch (Exception e) {
                 e.printStackTrace();
             }
