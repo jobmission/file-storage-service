@@ -1,7 +1,7 @@
 package com.revengemission.commons.fss.persistence.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class FileRecordEntity implements Serializable {
     private Long id;
@@ -18,9 +18,9 @@ public class FileRecordEntity implements Serializable {
 
     private int version;
 
-    private Date dateCreated;
+    private LocalDateTime dateCreated;
 
-    private Date lastModified;
+    private LocalDateTime lastModified;
 
     private static final long serialVersionUID = 1L;
 
@@ -80,19 +80,78 @@ public class FileRecordEntity implements Serializable {
         this.version = version;
     }
 
-    public Date getDateCreated() {
+    public LocalDateTime getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(LocalDateTime dateCreated) {
         this.dateCreated = dateCreated;
     }
 
-    public Date getLastModified() {
+    public LocalDateTime getLastModified() {
         return lastModified;
     }
 
-    public void setLastModified(Date lastModified) {
+    public void setLastModified(LocalDateTime lastModified) {
         this.lastModified = lastModified;
+    }
+
+    @Override
+    public boolean equals(Object that) {
+        if (this == that) {
+            return true;
+        }
+        if (that == null) {
+            return false;
+        }
+        if (getClass() != that.getClass()) {
+            return false;
+        }
+        FileRecordEntity other = (FileRecordEntity) that;
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
+            && (this.getUserId() == null ? other.getUserId() == null : this.getUserId().equals(other.getUserId()))
+            && (this.isShared() == other.isShared())
+            && (this.getFileName() == null ? other.getFileName() == null : this.getFileName().equals(other.getFileName()))
+            && (this.getRecordStatus() == other.getRecordStatus())
+            && (this.getRemarks() == null ? other.getRemarks() == null : this.getRemarks().equals(other.getRemarks()))
+            && (this.getVersion() == other.getVersion())
+            && (this.getDateCreated() == null ? other.getDateCreated() == null : this.getDateCreated().equals(other.getDateCreated()))
+            && (this.getLastModified() == null ? other.getLastModified() == null : this.getLastModified().equals(other.getLastModified()));
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((getId() == null) ? 0 : getId().hashCode());
+        result = prime * result + ((getUserId() == null) ? 0 : getUserId().hashCode());
+        result = prime * result + (isShared() ? 1231 : 1237);
+        result = prime * result + ((getFileName() == null) ? 0 : getFileName().hashCode());
+        result = prime * result + getRecordStatus();
+        result = prime * result + ((getRemarks() == null) ? 0 : getRemarks().hashCode());
+        result = prime * result + getVersion();
+        result = prime * result + ((getDateCreated() == null) ? 0 : getDateCreated().hashCode());
+        result = prime * result + ((getLastModified() == null) ? 0 : getLastModified().hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", userId=").append(userId);
+        sb.append(", shared=").append(shared);
+        sb.append(", fileName=").append(fileName);
+        sb.append(", recordStatus=").append(recordStatus);
+        sb.append(", remarks=").append(remarks);
+        sb.append(", version=").append(version);
+        sb.append(", dateCreated=").append(dateCreated);
+        sb.append(", lastModified=").append(lastModified);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
     }
 }

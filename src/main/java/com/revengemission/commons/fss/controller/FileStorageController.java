@@ -40,7 +40,6 @@ public class FileStorageController {
     @Autowired
     StorageService storageService;
 
-
     /**
      * 下载流
      *
@@ -107,17 +106,17 @@ public class FileStorageController {
 
     @PostMapping("/upload/protected")
     @ResponseBody
-    public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "files", required = false) MultipartFile files) {
-        return saveToDisk(files, protectedStorageLocation);
+    public Map<String, Object> handleFileUploadProtected(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub) {
+        return saveToDisk(file, protectedStorageLocation, sub);
     }
 
-    @PostMapping(value = "/upload/public", consumes = "multipart/form-data")
+    @PostMapping(value = "/upload/public")
     @ResponseBody
-    public Map<String, Object> handleFileUpload(@RequestPart(value = "files", required = false) MultipartFile files) {
-        return saveToDisk(files, publicStorageLocation);
+    public Map<String, Object> handleFileUpload(@RequestPart(value = "file") MultipartFile file, @RequestParam(value = "sub", required = false) String sub) {
+        return saveToDisk(file, publicStorageLocation, sub);
     }
 
-    private Map<String, Object> saveToDisk(List<MultipartFile> files, String publicStorageLocation) {
+    private Map<String, Object> saveToDisk(List<MultipartFile> files, String storageLocation) {
         Map<String, Object> result = new HashMap<>(16);
         List<String> fileNames = new LinkedList<>();
         if (files != null && files.size() > 0) {
@@ -135,7 +134,7 @@ public class FileStorageController {
                 }
                 if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
                     try {
-                        String newFileName = storageService.save(Paths.get(publicStorageLocation), multipartFile);
+                        String newFileName = storageService.save(Paths.get(storageLocation), multipartFile);
                         fileNames.add(newFileName);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -152,9 +151,12 @@ public class FileStorageController {
         return result;
     }
 
-    private Map<String, Object> saveToDisk(MultipartFile multipartFile, String publicStorageLocation) {
+    private Map<String, Object> saveToDisk(MultipartFile multipartFile, String storageLocation, String sub) {
+        if (!StringUtils.isEmpty(sub)) {
+            sub = sub.replaceAll("[^a-zA-Z]", "");
+        }
         Map<String, Object> result = new HashMap<>(16);
-        List<String> fileNames = new LinkedList<>();
+        String newFileName = "";
         String fileType = StringUtils.getFilenameExtension(multipartFile.getOriginalFilename());
         if (fileType == null || "".equals(fileType)) {
             String multipartFileContentType = multipartFile.getContentType();
@@ -168,18 +170,22 @@ public class FileStorageController {
         }
         if (whitelist.contains(StringUtils.trimAllWhitespace(fileType).toLowerCase())) {
             try {
-                String newFileName = storageService.save(Paths.get(publicStorageLocation), multipartFile);
-                fileNames.add(newFileName);
+                newFileName = storageService.save(Paths.get(storageLocation, sub), multipartFile);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        if (fileNames.size() > 0) {
-            result.put("status", 1);
-        } else {
+        if (StringUtils.isEmpty(newFileName)) {
             result.put("status", 0);
+        } else {
+            result.put("status", 1);
+            if (StringUtils.isEmpty(sub)) {
+                result.put("file", newFileName);
+            } else {
+                result.put("file", sub + "/" + newFileName);
+            }
         }
-        result.put("files", fileNames);
+
         return result;
     }
 

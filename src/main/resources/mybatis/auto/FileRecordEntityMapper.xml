@@ -258,5 +258,10 @@
       last_modified = #{lastModified,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
-  <cache flushInterval="5000" />
+  <select id="selectUniqueByExample" parameterType="com.revengemission.commons.fss.persistence.entity.FileRecordEntityExample" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from file_record_entity
+    <include refid="Example_Where_Clause" />
+  </select>
 </mapper>

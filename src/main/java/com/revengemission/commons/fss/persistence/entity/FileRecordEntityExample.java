@@ -1,7 +1,7 @@
 package com.revengemission.commons.fss.persistence.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class FileRecordEntityExample {
@@ -12,7 +12,7 @@ public class FileRecordEntityExample {
     protected List<Criteria> oredCriteria;
 
     public FileRecordEntityExample() {
-        oredCriteria = new ArrayList<Criteria>();
+        oredCriteria = new ArrayList<>();
     }
 
     public void setOrderByClause(String orderByClause) {
@@ -69,7 +69,7 @@ public class FileRecordEntityExample {
 
         protected GeneratedCriteria() {
             super();
-            criteria = new ArrayList<Criterion>();
+            criteria = new ArrayList<>();
         }
 
         public boolean isValid() {
@@ -555,52 +555,52 @@ public class FileRecordEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedEqualTo(Date value) {
+        public Criteria andDateCreatedEqualTo(LocalDateTime value) {
             addCriterion("date_created =", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedNotEqualTo(Date value) {
+        public Criteria andDateCreatedNotEqualTo(LocalDateTime value) {
             addCriterion("date_created <>", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedGreaterThan(Date value) {
+        public Criteria andDateCreatedGreaterThan(LocalDateTime value) {
             addCriterion("date_created >", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedGreaterThanOrEqualTo(Date value) {
+        public Criteria andDateCreatedGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("date_created >=", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedLessThan(Date value) {
+        public Criteria andDateCreatedLessThan(LocalDateTime value) {
             addCriterion("date_created <", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedLessThanOrEqualTo(Date value) {
+        public Criteria andDateCreatedLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("date_created <=", value, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedIn(List<Date> values) {
+        public Criteria andDateCreatedIn(List<LocalDateTime> values) {
             addCriterion("date_created in", values, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedNotIn(List<Date> values) {
+        public Criteria andDateCreatedNotIn(List<LocalDateTime> values) {
             addCriterion("date_created not in", values, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedBetween(Date value1, Date value2) {
+        public Criteria andDateCreatedBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("date_created between", value1, value2, "dateCreated");
             return (Criteria) this;
         }
 
-        public Criteria andDateCreatedNotBetween(Date value1, Date value2) {
+        public Criteria andDateCreatedNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("date_created not between", value1, value2, "dateCreated");
             return (Criteria) this;
         }
@@ -615,59 +615,58 @@ public class FileRecordEntityExample {
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedEqualTo(Date value) {
+        public Criteria andLastModifiedEqualTo(LocalDateTime value) {
             addCriterion("last_modified =", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedNotEqualTo(Date value) {
+        public Criteria andLastModifiedNotEqualTo(LocalDateTime value) {
             addCriterion("last_modified <>", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedGreaterThan(Date value) {
+        public Criteria andLastModifiedGreaterThan(LocalDateTime value) {
             addCriterion("last_modified >", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedGreaterThanOrEqualTo(Date value) {
+        public Criteria andLastModifiedGreaterThanOrEqualTo(LocalDateTime value) {
             addCriterion("last_modified >=", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedLessThan(Date value) {
+        public Criteria andLastModifiedLessThan(LocalDateTime value) {
             addCriterion("last_modified <", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedLessThanOrEqualTo(Date value) {
+        public Criteria andLastModifiedLessThanOrEqualTo(LocalDateTime value) {
             addCriterion("last_modified <=", value, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedIn(List<Date> values) {
+        public Criteria andLastModifiedIn(List<LocalDateTime> values) {
             addCriterion("last_modified in", values, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedNotIn(List<Date> values) {
+        public Criteria andLastModifiedNotIn(List<LocalDateTime> values) {
             addCriterion("last_modified not in", values, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedBetween(Date value1, Date value2) {
+        public Criteria andLastModifiedBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("last_modified between", value1, value2, "lastModified");
             return (Criteria) this;
         }
 
-        public Criteria andLastModifiedNotBetween(Date value1, Date value2) {
+        public Criteria andLastModifiedNotBetween(LocalDateTime value1, LocalDateTime value2) {
             addCriterion("last_modified not between", value1, value2, "lastModified");
             return (Criteria) this;
         }
     }
 
     public static class Criteria extends GeneratedCriteria {
-
         protected Criteria() {
             super();
         }

@@ -2,7 +2,8 @@
 # 创建数据库
 ````
 CREATE DATABASE IF NOT EXISTS file_storage_service DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
-grant all privileges on file_storage_service.* to file_storage_service@localhost identified by 'file_storage_service';
+create user 'user_dev'@'localhost' identified by 'pass_dev';
+grant all privileges on file_storage_service.* to 'user_dev'@'localhost';
 ````
 
 # 采用OAuth2授权,需要添加Authorization header

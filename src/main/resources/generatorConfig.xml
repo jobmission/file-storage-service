@@ -4,44 +4,43 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <context id="MySql2Tables" targetRuntime="MyBatis3">
+
+    <context id="MySql2Tables" targetRuntime="MyBatis3" defaultModelType="flat">
+        <!--生成的xml文件完全覆盖，需结合overwrite配置和UnmergeableXmlMappersPlugin插件使用-->
         <property name="mergeable" value="false"/>
 
         <!--
-                http://www.mybatis.org/generator/reference/plugins.html
-       -->
-
+        http://www.mybatis.org/generator/reference/plugins.html
+        -->
+        <!-- 这个插件给由MBG生成的Java模型对象增加了equals和hashCode方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
-
-
-        <plugin type="com.revengemission.plugins.mybatis.MybatisSelectOneByColumnsPlugin">
-            <property
-                    name="sequence_entity;selectUniqueBySequenceName"
-                    value="sequence_name String"/>
-        </plugin>
-
-        <plugin type="org.mybatis.generator.plugins.CachePlugin">
-            <property name="cache_flushInterval" value="5000"/>
-        </plugin>
-
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin"/>
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin"/>
+        <plugin type="com.revengemission.plugins.mybatis.SelectUniqueByExamplePlugin"/>
         <!--去除注释  -->
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
 
         <!--数据库连接 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/file_storage_service?useSSL=false"
-                        userId="file_storage_service"
-                        password="file_storage_service">
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
+                        connectionURL="jdbc:mysql://localhost:3306/file_storage_service"
+                        userId="user_dev"
+                        password="pass_dev">
             <property name="useSSL" value="false"/>
+            <property name="useUnicode" value="true"/>
             <property name="characterEncoding" value="utf8"/>
-            <property name="serverTimezone" value="GMT+8"/>
+            <property name="allowPublicKeyRetrieval" value="true"/>
+            <property name="serverTimezone" value="Asia/Shanghai"/>
+            <!--    ！！解决MYSQL 8.0 ,非预期结果！！！    -->
             <property name="nullCatalogMeansCurrent" value="true"/>
         </jdbcConnection>
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
+            <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
 
         <javaModelGenerator targetPackage="com.revengemission.commons.fss.persistence.entity"

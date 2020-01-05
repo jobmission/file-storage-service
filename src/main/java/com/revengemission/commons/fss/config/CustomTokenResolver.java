@@ -12,38 +12,25 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class CustomTokenResolver implements BearerTokenResolver {
-    private static final Pattern authorizationPattern = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-._~+/]+)=*$");
-    private boolean allowFormEncodedBodyParameter = true;
-    private boolean allowUriQueryParameter = true;
+    private static final Pattern AUTHORIZATION_PATTERN = Pattern.compile("^Bearer (?<token>[a-zA-Z0-9-._~+/]+)=*$");
 
+    @Override
     public String resolve(HttpServletRequest request) {
-        String authorizationHeaderToken = resolveFromAuthorizationHeader(request);
-        if (!StringUtils.isEmpty(authorizationHeaderToken)) {
-            return authorizationHeaderToken;
+        String access_token = resolveFromAuthorizationHeader(request);
+        if (StringUtils.isEmpty(access_token)) {
+            access_token = resolveFromRequestParameters(request);
         }
-        String parameterToken = resolveFromRequestParameters(request);
-        if (isParameterTokenSupportedForRequest(request) && !StringUtils.isEmpty(parameterToken)) {
-            return parameterToken;
+        if (StringUtils.isEmpty(access_token)) {
+            access_token = resolveFromCookie(request);
         }
-        String cookieToken = resolveFromCookie(request);
-        if (!StringUtils.isEmpty(cookieToken)) {
-            return cookieToken;
-        }
-        return null;
-    }
-
-    public void setAllowFormEncodedBodyParameter(boolean allowFormEncodedBodyParameter) {
-        this.allowFormEncodedBodyParameter = allowFormEncodedBodyParameter;
-    }
-
-    public void setAllowUriQueryParameter(boolean allowUriQueryParameter) {
-        this.allowUriQueryParameter = allowUriQueryParameter;
+        //todo check whether token in redis <tokenBlacklist>
+        return access_token;
     }
 
     private static String resolveFromAuthorizationHeader(HttpServletRequest request) {
         String authorization = request.getHeader("Authorization");
         if (StringUtils.hasText(authorization) && authorization.startsWith("Bearer")) {
-            Matcher matcher = authorizationPattern.matcher(authorization);
+            Matcher matcher = AUTHORIZATION_PATTERN.matcher(authorization);
             if (!matcher.matches()) {
                 BearerTokenError error = new BearerTokenError("invalid_token", HttpStatus.UNAUTHORIZED, "Bearer token is malformed", "https://tools.ietf.org/html/rfc6750#section-3.1");
                 throw new OAuth2AuthenticationException(error);
@@ -61,7 +48,7 @@ public class CustomTokenResolver implements BearerTokenResolver {
             if (values.length == 1) {
                 return values[0];
             } else {
-                BearerTokenError error = new BearerTokenError("invalid_request", HttpStatus.BAD_REQUEST, "Found multiple bearer tokens in the request", "https://tools.ietf.org/html/rfc6750#section-3.1");
+                BearerTokenError error = new BearerTokenError("invalid_request", HttpStatus.BAD_REQUEST, "Found multiple tokens in the request", "https://tools.ietf.org/html/rfc6750#section-3.1");
                 throw new OAuth2AuthenticationException(error);
             }
         } else {
@@ -69,21 +56,23 @@ public class CustomTokenResolver implements BearerTokenResolver {
         }
     }
 
-    private boolean isParameterTokenSupportedForRequest(HttpServletRequest request) {
-        return this.allowFormEncodedBodyParameter && "POST".equals(request.getMethod()) || this.allowUriQueryParameter && "GET".equals(request.getMethod());
-    }
-
     protected String resolveFromCookie(HttpServletRequest request) {
 
         String cookieToken = null;
-        Cookie[] cookies = request.getCookies();//根据请求数据，找到cookie数组
+        //根据请求数据，找到cookie数组
+        Cookie[] cookies = request.getCookies();
 
         if (null != cookies && cookies.length > 0) {
+            int foundTimes = 0;
             for (Cookie cookie : cookies) {
-                if (null != cookie.getName() && cookie.getName().trim().equalsIgnoreCase("access_token")) {
+                if (null != cookie.getName() && "access_token".equalsIgnoreCase(cookie.getName().trim())) {
                     cookieToken = cookie.getValue().trim();
-                    break;
+                    foundTimes++;
                 }
+            }
+            if (foundTimes > 1) {
+                BearerTokenError error = new BearerTokenError("invalid_request", HttpStatus.BAD_REQUEST, "Found multiple tokens in the request", "https://tools.ietf.org/html/rfc6750#section-3.1");
+                throw new OAuth2AuthenticationException(error);
             }
         }
         return cookieToken;
